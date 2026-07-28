@@ -19,4 +19,4 @@ metadata:
   name: chaos-deploy-history
   namespace: default
 data:
-  history.jsonl: ""
+  history.jsonl: "{\"build_number\":\"25\",\"git_commit\":\"1b5bb8d\",\"status\":\"success\",\"timestamp\":\"2026-07-28T09:36:33Z\"}"
