@@ -55,7 +55,7 @@ spec:
         # 전엔 항상 `kubectl get deployment chaos-demo -o jsonpath='{.spec.template.spec.containers[0].image}'`
         # 로 현재 실제 태그를 먼저 확인해서 맞춰두거나, apply 직후 `kubectl set image`로 복구할 것.
         - name: chaos-demo
-          image: "55901daa-kr1-registry.container.nhncloud.com/chaosarena-registry/chaos-arena:jenkins-32" # NCR(비공개 레지스트리)
+          image: "55901daa-kr1-registry.container.nhncloud.com/chaosarena-registry/chaos-arena:jenkins-31" # NCR(비공개 레지스트리)
           # 기본값(IfNotPresent)은 태그가 같으면 로컬 캐시를 그대로 써버려서, 태그를 안 바꾸고
           # 재빌드/재서명해도 노드가 새 이미지를 못 본다. 매번 레지스트리에서 실제로 확인하게 강제.
           imagePullPolicy: Always
@@ -88,11 +88,11 @@ spec:
             # (그래야 ArgoCD self-heal이 이 값들을 안 지운다), 이제 여기 선언해두고 Jenkins가
             # ChaosArena-manifests 레포의 사본에 yq로 값을 갱신해서 커밋한다.
             - name: BUILD_NUMBER
-              value: "32"
+              value: "31"
             - name: GIT_COMMIT
-              value: "1c12dfc"
+              value: "16ab9fa"
             - name: DEPLOY_DURATION_SECONDS
-              value: "41"
+              value: "40"
           resources:
             requests:
               cpu: "100m"
