@@ -41,7 +41,7 @@ spec:
         # 주의: Jenkins가 배포 때마다 이 필드를 yq로 직접 덮어쓴다(태그는 kr1-jenkins-${BUILD_NUMBER}).
         # 이 파일을 손으로 apply하기 전엔 항상 현재 실제 태그를 먼저 확인할 것.
         - name: chaos-demo
-          image: "55901daa-kr1-registry.container.nhncloud.com/chaosarena-registry/chaos-arena:kr1-jenkins-4"
+          image: "55901daa-kr1-registry.container.nhncloud.com/chaosarena-registry/chaos-arena:jenkins-43"
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
@@ -71,11 +71,11 @@ spec:
                   key: password
                   optional: true
             - name: BUILD_NUMBER
-              value: "4"
+              value: ""
             - name: GIT_COMMIT
-              value: "c01e4b8"
+              value: ""
             - name: DEPLOY_DURATION_SECONDS
-              value: "49"
+              value: ""
           resources:
             requests:
               cpu: "100m"
