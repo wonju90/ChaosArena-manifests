@@ -1,0 +1,97 @@
+# ---------------------------------------------------------------------------
+# chaos-demo 워크로드 Deployment (KR1).
+# app.py의 LABEL_SELECTOR("app=chaos-demo")와 EXPECTED_REPLICAS(기본 3)에 맞춰
+# label/replicas를 구성했다. serviceAccountName은 rbac.yaml에서 만든 것과 짝을 이룬다.
+# ---------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chaos-demo
+  namespace: default
+  labels:
+    app: chaos-demo
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: chaos-demo
+  template:
+    metadata:
+      labels:
+        app: chaos-demo
+    spec:
+      serviceAccountName: chaos-dashboard-sa
+      imagePullSecrets:
+        - name: ncr-secret
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: chaos-demo
+                topologyKey: kubernetes.io/hostname
+      containers:
+        # 주의: Jenkins가 배포 때마다 이 필드를 yq로 직접 덮어쓴다(태그는 kr1-jenkins-${BUILD_NUMBER}).
+        # 이 파일을 손으로 apply하기 전엔 항상 현재 실제 태그를 먼저 확인할 것.
+        - name: chaos-demo
+          image: "55901daa-kr1-registry.container.nhncloud.com/chaosarena-registry/chaos-arena:jenkins-43"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: LOCAL_MODE
+              value: "false"
+            - name: K8S_NAMESPACE
+              value: "default"
+            - name: EXPECTED_REPLICAS
+              value: "3"
+            - name: APP_VERSION
+              value: "kr1"
+            - name: SLACK_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: slack-webhook
+                  key: url
+                  optional: true
+            - name: REDIS_HOST
+              value: "redis.default.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: password
+                  optional: true
+            - name: BUILD_NUMBER
+              value: ""
+            - name: GIT_COMMIT
+              value: ""
+            - name: DEPLOY_DURATION_SECONDS
+              value: ""
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5

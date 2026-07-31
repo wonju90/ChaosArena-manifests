@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chaos-deploy-history
+  namespace: default
+data:
+  history.jsonl: ""
