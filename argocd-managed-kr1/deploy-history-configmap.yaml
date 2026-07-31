@@ -4,4 +4,4 @@ metadata:
   name: chaos-deploy-history
   namespace: default
 data:
-  history.jsonl: "{\"build_number\":\"4\",\"git_commit\":\"c01e4b8\",\"status\":\"rollback\",\"recovered_build\":\"\",\"timestamp\":\"2026-07-31T04:58:45Z\"}"
+  history.jsonl: "{\"build_number\":\"5\",\"git_commit\":\"644b894\",\"status\":\"success\",\"timestamp\":\"2026-07-31T05:08:38Z\"}\n{\"build_number\":\"4\",\"git_commit\":\"c01e4b8\",\"status\":\"rollback\",\"recovered_build\":\"\",\"timestamp\":\"2026-07-31T04:58:45Z\"}"
