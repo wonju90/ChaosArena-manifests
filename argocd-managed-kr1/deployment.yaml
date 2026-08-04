@@ -82,6 +82,8 @@ spec:
               value: "http://jenkins.jenkins.svc.cluster.local:8080/login"
             - name: ARGOCD_HEALTH_URL
               value: "http://argocd-server.argocd.svc.cluster.local:80"
+            - name: PROMETHEUS_URL
+              value: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
           resources:
             requests:
               cpu: "100m"
