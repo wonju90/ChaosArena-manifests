@@ -78,6 +78,11 @@ spec:
               value: "47"
             - name: REGIONS_JSON
               value: '[{"id":"kr1","label":"판교","url":"http://133.186.144.246"},{"id":"kr2","label":"평촌","url":"http://114.110.162.53"}]'
+            - name: JENKINS_HEALTH_URL
+              value: "http://jenkins.jenkins.svc.cluster.local:8080/login"
+            - name: ARGOCD_HEALTH_URL
+              value: "http://argocd-server.argocd.svc.cluster.local:80"
+
 
           resources:
             requests:
